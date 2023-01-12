@@ -9,5 +9,5 @@ This course introduces the fundamentals of data science with an emphasis on data
 While I have no prior coding experience, I'm taking Bis 15L because it is designed for students like me that have no background in computer programming. I'm excited to learn the language of R and create an interesting project at the end of the quarter!
 
 # Contact Information
-You may contact me through my email rsjariwala@ucdavis.edu
+You may contact me through my email: rsjariwala@ucdavis.edu.
 ** **
