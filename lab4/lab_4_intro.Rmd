@@ -1,7 +1,9 @@
 ---
 title: "Lab 4 Intro"
 date: "`r Sys.Date()`"
-output: ioslides_presentation
+output: 
+  ioslides_presentation: 
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -20,7 +22,10 @@ library("jpeg")
 ## Review from last time
 ### *With a partner, discuss the following questions*
 1. How is a data frame and how is it different than a data matrix?  
-2. What is the command we use to import .csv files into R?  
+##Data frames can store multiple classes of data while data matrices cannot?
+creates spreadsheet, format is cleaner and creates a spreadsheet 
+2. What is the command we use to import .csv files into R? 
+##hot_springs <- readr::read_csv("hsprings_data.csv")
 3. Take a moment to show your repository on GitHub to a partner. Can you make any improvements?  
 
 ## Warm-up
@@ -29,3 +34,26 @@ library("jpeg")
 3. What are the names of the variables in the `penguins` dataset?
 4. How many individuals were sampled on each island in the `penguins` dataset?
 5. What is the mean body mass for all individuals in the `penguins` dataset?
+
+```{r}
+library("tidyverse")
+#install.packages("palmerpenguins")
+library("palmerpenguins")
+```
+
+```{r}
+dim(penguins)
+```
+```{r}
+names(penguins)
+```
+1 individual sampled
+
+```{r}
+mean(penguins$body_mass_g, na.rm=T)
+```
+
+```{r}
+summary(penguins)
+```
+

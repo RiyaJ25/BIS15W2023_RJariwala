@@ -9,6 +9,8 @@ output:
   pdf_document:
     toc: yes
 ---
+#Review: What is an object?
+object appears in environment panel, could be data matrix or frame, could be a vector, or it could be a stored value/function that you named 
 
 ## Learning Goals  
 *At the end of this exercise, you will be able to:*    
@@ -39,10 +41,12 @@ mammals <- rename(mammals, genus=Genus, wean_mass="wean mass", max_life="max. li
 ```
 
 ## `filter()`
-Unlike `select()`, `filter()` allows us to extract data that meet specific criteria within a variable. Let's say that we are interested only in the fish that occur in lake "AL". We can use `filter()` to extract these observations.  
+Unlike `select()`, `filter()` allows us to extract data that meet specific criteria within a variable. Let's say that we are interested only in the fish that occur in lake "AL". We can use `filter()` to extract these observations.
+#select takes out columns, filter looks in rows (can take out -999 from lab 4.1?)
 ```{r}
 filter(fish, lakeid == "AL")
 ```
+#make sure to have the quotations around AL because it's a category 
 
 Similarly, if we are only interested in fish with a length greater than or equal to 350 we can use `filter()` to extract these observations.  
 ```{r}
@@ -52,6 +56,7 @@ filter(fish, length >= 350)
 + `filter()` allows all of the expected operators; i.e. >, >=, <, <=, != (not equal), and == (equal).  
 
 Using the `!` operator allows for the exclusion of specific observations.
+#here we use ! to omit Alabama variable 
 ```{r}
 filter(fish, lakeid != "AL")
 ```
@@ -61,11 +66,13 @@ Filtering multiple values within the same variable requires the `%in%` [operator
 ```{r}
 filter(fish, length %in% c(167, 175))
 ```
+#here we are asking for only observations that are 167 to 175 in length column
 
 Alternatively, you can use `between` if you are looking for a range of specific values.  
 ```{r}
 filter(fish, between(scalelength, 2.5, 2.55))
 ```
+#use between to find values that are between 2.5 and 2.55 (not inclusive?)
 
 You can also extract observations "near" a certain value but you need to specify a tolerance.  
 ```{r}
@@ -75,22 +82,22 @@ filter(fish, near(radii_length_mm, 2, tol = 0.2))
 ## Practice
 1. Filter the `fish` data to include the samples from lake "BO".
 ```{r}
-
+filter(fish, lakeid=="BO")
 ```
 
 2. Filter the data to include all lakes except "AR".
 ```{r}
-
+filter(fish, lakeid!="AR")
 ```
 
 3. Filter the fish data to include all fish with a scalelength within 0.25 of 8.
 ```{r}
-
+filter(fish, near(scalelength, 8, tol=0.25))
 ```
 
 4. Filter the fish data to include fish with a scalelength between 2 and 4.
 ```{r}
-
+filter(fish, between(scalelength, 2, 4))
 ```
 
 ## Using `filter()` on multiple conditions
@@ -114,32 +121,33 @@ In this case, we filter out the fish with a length over 400 and a scale length o
 ```{r}
 filter(fish, length > 400, (scalelength > 11 | radii_length_mm > 8))
 ```
-
+# & is for both conditions being met and or is the line (I) where either observation is met (one or the other)
 ## Practice  
 1. Have a look at the mammals data using the summary functions of your choosing.    
 ```{r}
-
+summary(mammals)
 ```
 
 2. What are the names of the variables in the mammals data?  
 ```{r}
-
+names(mammals)
 ```
 
 3.  From the `mammals` data, filter all members of the family Bovidae with a mass greater than 450000.
 ```{r}
-
+filter(mammals, family=="Bovidae" & mass>450000)
 ```
 
 4. Let's say we are only interested in family, genus, species, mass, and gestation. Relimit the mammals data frame to these variables.  
 ```{r}
 
 ```
-
+new_mammal_data <- select(mammals_new, "genus", "family", "species", "mass", "gestation")
+new_mammal_data
 5. Use the output from #4 to focus on the family Bovidae with a mass greater than 450000.
 ```{r}
-
 ```
+filter(new_mammal_data, family=="Bovidae" & mass>450000)
 
 6. From the `mammals` data, build a data frame that compares `mass`, `gestation`, and `newborn` among the primate genera `Lophocebus`, `Erythrocebus`, and `Macaca`. Among these genera, which species has the smallest `newborn` mass?
 ```{r}

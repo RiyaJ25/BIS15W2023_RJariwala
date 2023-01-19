@@ -1,0 +1,34 @@
+---
+title: "Lab 4 warmup"
+output: html_document
+date: "2023-01-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("tidyverse")
+library("palmerpenguins")
+```
+
+```{r}
+penguins <- penguins
+```
+
+```{r}
+dim(penguins)
+```
+```{r}
+names(penguins)
+```
+```{r}
+table(penguins$island)
+##categorical variables work best w table function 
+```
+```{r}
+mean(penguins$body_mass_g, na.rm=T)
+```
+##doesn't understand bc the class is wrong, not numbers 
+
