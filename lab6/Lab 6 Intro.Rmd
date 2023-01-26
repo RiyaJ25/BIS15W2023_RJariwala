@@ -1,0 +1,104 @@
+---
+title: "Lab 6 Intro"
+output: 
+  html_document: 
+    keep_md: yes
+date: "2023-01-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+title: "Lab 6 Intro"
+date: "`r Sys.Date()`"
+output:
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("jpeg")
+```
+
+## Setup
+1. Login to the lab computer (please don't use your personal computer).  
+2. Navigate to github.com and login.   
+2. Use GitHub desktop to clone your repository to the desktop.   
+5. Copy the class repository to the desktop (https://github.com/jmledford3115/datascibiol).  
+6. Copy the files for today's lab from the class repository and paste them into **your** repository.  
+7. Open today's lab in RStudio.  
+
+## Review from last time
+### *With a partner, discuss the following questions*
+1. What is a pipe? Why are they useful in R?
+#Pipes feed the output from one function into the input of another function. This helps us keep our code sequential and clean.  
+2. What is the shortcut for making a pipe?
+#shift command M for mac 
+3. What is the difference between `select`, `filter`, and `mutate`?
+#With select you can look at columns of a data frame and with filter you can look at the specific values that correspond to a certain column. Mutate allows you to make a new calculated column in the data. 
+4. What are the logistics of midterm 1?
+#For midterm 1, we can work on it for 50 minutes alone using our notes and our own repositories only. After that for 50 minutes we can collaborate with classmates and resubmit the midterm. 
+
+### Warm-up
+1. Open the data `ecs21351-sup-0003-SupplementS1.csv`
+```{r}
+ecosphere <- readr::read_csv("ecs21351-sup-0003-SupplementS1.csv", skip=2)
+```
+
+2. Clean the names of the variables
+```{r}
+library("tidyverse")
+library("dbplyr")
+```
+
+```{r}
+ecosphere <- 
+  janitor::clean_names(ecosphere)
+names(ecosphere)
+```
+#notice that we had to skip the first two rows by adding that code to the read:: chunk 
+
+rewritten:
+ecosphere <- ecosphere %>% janitor::clean_names(ecosphere) (ask how this was rewritten)
+
+3. Explore the data using a function of your choice
+```{r}
+summary(ecosphere)
+```
+
+4. Are there more veggie (31), omni(114), insecivore, or nectar feeders in the data(216)?
+```{r}
+ecosphere %>% 
+  filter(diet=="Vegetation")
+```
+```{r}
+ecosphere %>% 
+  filter(diet=="Omnivore")
+```
+
+```{r}
+ecosphere %>% 
+  filter(diet=="Invertebrates")
+```
+#There are more invertebrates. 
+5. Which families are Veggie?
+```{r}
+ecosphere %>% 
+  select(family, diet) %>% 
+  filter(diet=="Vegetation") %>% 
+  tabyl(diet)
+```
+#there are 31 families that have vegetation diet
+
+Anatidae, Phasianidae, Tetraodonidae, and Rallidae 
+
+```{r}
+ecosphere %>% 
+  tabyl(diet) %>% 
+  arrange(desc(n))
+```
+
+# ^ that is how you would look at how many of each there are for previous q
