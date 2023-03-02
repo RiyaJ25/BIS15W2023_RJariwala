@@ -1,6 +1,6 @@
 ---
-title: "Lab 13 Homework"
-author: "Please Add Your Name Here"
+title: "Lab 12 Homework"
+author: "Riya Jariwala"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -23,6 +23,75 @@ library(tidyverse)
 library(shiny)
 library(shinydashboard)
 ```
+
+##Practice from Lab 12.2: 
+1. Start by loading and exploring the data.
+```{r}
+wolves <- read_csv("data/wolves_data/wolves_dataset.csv")
+```
+
+```{r}
+names(wolves)
+```
+
+2. For the app, here is a faceted version of what we are looking for. We want the reactive part to be `pop` and you should use `shinydashboard`.
+```{r}
+wolves %>% 
+  filter(sex!="NA") %>% 
+  ggplot(aes(x=sex, fill=sex))+
+  geom_bar()+
+  facet_wrap(~pop)
+```
+```{r}
+wolves %>% 
+  filter(sex!="NA") %>% 
+  group_by(pop)
+```
+```{r}
+wolves %>% 
+      filter(sex!="NA") %>% 
+      group_by(pop) %>% 
+      summarise(n=n(), .groups='keep') %>% 
+  ggplot(aes(x=pop, y=n, fill="sex"))+
+  geom_col()
+```
+
+
+```{r}
+ui <- dashboardPage(
+  dashboardHeader(title = "Wolves"),
+  dashboardSidebar(disable = T),
+  dashboardBody(
+  fluidRow(
+  box(
+    selectInput("x", "Select Population", choices = c("AK.PEN", "BAN.JAS", "BC", "DENALI", "ELLES", "GTNP", "INT.AK", "MEXICAN", "MI", "MT", "N.NWT", "ONT", "SE.AK", "SNF", "SS.NWT", "YNP", "YUCH")),
+    selectInput("y", "Sex", choices = c("M", "F")),
+  
+  box(
+  plotOutput("plot", width = "500px", height = "500px")
+  ) 
+  ) 
+  ) 
+  )
+)
+
+server <- function(input, output, session) { 
+  output$plot <- renderPlot({
+    wolves %>% 
+      filter(sex!="NA") %>% 
+      filter(pop==input$x) %>% 
+      group_by(sex) %>% 
+      summarise(n=n(), .groups='keep') %>% 
+  ggplot(aes(x=input$x, y=n, fill="sex"))+
+  geom_col(alpha=0.6)+
+      theme_light(base_size = 18)
+  })
+  session$onSessionEnded(stopApp)
+  }
+
+shinyApp(ui, server)
+```
+      
 
 ## Data
 The data for this assignment come from the [University of California Information Center](https://www.universityofcalifornia.edu/infocenter). Admissions data were collected for the years 2010-2019 for each UC campus. Admissions are broken down into three categories: applications, admits, and enrollees. The number of individuals in each category are presented by demographic.  
